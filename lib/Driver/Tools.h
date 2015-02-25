@@ -676,6 +676,35 @@ public:
 };
 }
 
+/// musl -- Directly call GNU Binutils assembler and linker
+namespace musl {
+  class LLVM_LIBRARY_VISIBILITY Assemble : public Tool  {
+  public:
+    Assemble(const ToolChain &TC) : Tool("musl::Assemble", "assembler", TC) {}
+
+    bool hasIntegratedCPP() const override { return false; }
+
+    void ConstructJob(Compilation &C, const JobAction &JA,
+                      const InputInfo &Output,
+                      const InputInfoList &Inputs,
+                      const llvm::opt::ArgList &TCArgs,
+                      const char *LinkingOutput) const override;
+  };
+  class LLVM_LIBRARY_VISIBILITY Link : public Tool  {
+  public:
+    Link(const ToolChain &TC) : Tool("musl::Link", "linker", TC) {}
+
+    bool hasIntegratedCPP() const override { return false; }
+    bool isLinkJob() const override { return true; }
+
+    void ConstructJob(Compilation &C, const JobAction &JA,
+                      const InputInfo &Output,
+                      const InputInfoList &Inputs,
+                      const llvm::opt::ArgList &TCArgs,
+                      const char *LinkingOutput) const override;
+  };
+} // end namespace musl
+
 } // end namespace toolchains
 } // end namespace driver
 } // end namespace clang

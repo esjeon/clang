@@ -3488,3 +3488,19 @@ void XCore::AddCXXStdlibLibArgs(const ArgList &Args,
                                 ArgStringList &CmdArgs) const {
   // We don't output any lib args. This is handled by xcc.
 }
+
+Musl::Musl(const Driver &D, const llvm::Triple &Triple, const llvm::opt::ArgList &Args)
+    : Generic_ELF(D, Triple, Args) {
+  getFilePaths().push_back(getDriver().Dir + "/../lib");
+  getFilePaths().push_back("=/usr/local/musl/lib");
+  getFilePaths().push_back("/lib");
+  getFilePaths().push_back("=/usr/lib");
+}
+
+Tool *Musl::buildAssembler() const {
+    return new tools::musl::Assemble(*this);
+}
+
+Tool *Musl::buildLinker() const {
+i   return new tools::musl::Link(*this);
+}

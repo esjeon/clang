@@ -2046,8 +2046,11 @@ const ToolChain &Driver::getToolChain(const ArgList &Args,
       TC = new toolchains::Minix(*this, Target, Args);
       break;
     case llvm::Triple::Linux:
+      //EONTODO: return Musl driver from here
       if (Target.getArch() == llvm::Triple::hexagon)
         TC = new toolchains::Hexagon_TC(*this, Target, Args);
+      else if(Target.getEnvironment() == llvm::Triple::Musl)
+        TC = new toolchains::Musl(*this, Target, Args);
       else
         TC = new toolchains::Linux(*this, Target, Args);
       break;

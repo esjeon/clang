@@ -787,6 +787,16 @@ public:
                            llvm::opt::ArgStringList &CmdArgs) const override;
 };
 
+class LLVM_LIBRARY_VISIBILITY Musl : public Generic_ELF {
+public:
+  Musl(const Driver &D, const llvm::Triple &Triple,
+       const llvm::opt::ArgList &Args);
+
+protected:
+  Tool *buildAssembler() const override;
+  Tool *buildLinker() const override;
+};
+
 } // end namespace toolchains
 } // end namespace driver
 } // end namespace clang
